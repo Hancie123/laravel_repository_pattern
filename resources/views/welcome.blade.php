@@ -24,20 +24,45 @@
             </div>
             <div class="mb-3">
                 <label for="pwd">Email:</label>
-                <input type="email" class="form-control" id="pwd" placeholder="Enter email" name="email">
+                <input type="text" class="form-control" id="pwd" placeholder="Enter email" name="email">
                 @error('email')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 
-    @foreach ($contact as $data)
-    <h1>{{$data->email}}</h1>
 
-    @endforeach
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($contact as $data)
+                <tr>
+                    <td>{{ $data->id }}</td>
+                    <td>{{ $data->name }}</td>
+                    <td>{{ $data->email }}</td>
+                    <td><a href="{{url('/delete')}}/{{$data->id}}" class="btn btn-primary">Trash</a></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @if (Session::has('success'))
+        <div class="alert alert-danger">
+            {{Session::get('success')}}
+        </div>
+
+        @endif
+
+
 
 
 

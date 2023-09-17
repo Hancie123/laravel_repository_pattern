@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[ContactController::class,'index']);
 
 Route::post('/',[ContactController::class,'store']);
+
+
+Route::get('/delete/{id}',[ContactController::class,'destroy']);

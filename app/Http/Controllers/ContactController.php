@@ -18,17 +18,17 @@ class ContactController extends Controller
 
     public function __construct(ContactRepositoryInterface $contactRepository)
     {
-            $this->contactRepository=$contactRepository;
+        $this->contactRepository = $contactRepository;
     }
     public function index()
     {
-        $contact=$this->contactRepository->getAll();
+        $contact = $this->contactRepository->getAll();
 
         // $contact=Contact::all();
 
         // $resource = ContactResource::collection($contact);
         // $con = ContactResource::collection($contact);
-        return view('welcome',compact('contact'));
+        return view('welcome', compact('contact'));
     }
 
     /**
@@ -44,23 +44,19 @@ class ContactController extends Controller
      */
     public function store(contactRequest $request)
     {
-        $data=$request->validated();
-            try{
+        $data = $request->validated();
+        try {
 
-                $contact=DB::transaction(function() use($data){
-                    $contact=Contact::create($data);
-                    return $contact;
-
-                });
-                if($contact!==null){
-                    return back()->with('success','Contact send!');
-                }
-
+            $contact = DB::transaction(function () use ($data) {
+                $contact = Contact::create($data);
+                return $contact;
+            });
+            if ($contact !== null) {
+                return back()->with('success', 'Contact send!');
             }
-            catch(\Exception $e){
-                return back()->with('fail',$e->getMessage());
-
-            }
+        } catch (\Exception $e) {
+            return back()->with('fail', $e->getMessage());
+        }
     }
 
     /**
@@ -92,6 +88,15 @@ class ContactController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $contact = $this->contactRepository->findById($id);
+            if ($contact == null) {
+                return back()->with('fail', 'ID no found!');
+            } else {
+                $this->contactRepository->delete($id);
+                return back()->with('success', 'You have deleted the contact');
+            }
+        } catch (\Exception $e) {
+        }
     }
 }
