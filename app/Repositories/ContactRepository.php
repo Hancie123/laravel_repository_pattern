@@ -10,7 +10,7 @@ class ContactRepository implements ContactRepositoryInterface
 {
     public function getAll()
     {
-        return Contact::withTrashed()->get();
+        return Contact::all();
     }
 
     public function findById($id){
